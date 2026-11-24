@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIKALPA  - Future Unleashed</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--cyan:#00eaff;--blue:#008cff;--purple:#a855ff}
+body{width:100%;height:100vh;overflow:hidden;background:#01030b;color:white;font-family:Arial,sans-serif}
+.background{position:fixed;inset:0;background:radial-gradient(ellipse at center,rgba(0,130,255,.25),transparent 55%),radial-gradient(circle at 15% 20%,rgba(130,0,255,.18),transparent 35%),radial-gradient(circle at 85% 80%,rgba(0,220,255,.15),transparent 35%),#01030b}
+#universe{position:fixed;inset:0;width:100%;height:100%;z-index:1}
+.grid{position:fixed;inset:0;z-index:1;opacity:.10;background-image:linear-gradient(rgba(0,200,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,255,.2) 1px,transparent 1px);background-size:55px 55px}
+.floor{position:fixed;bottom:-45%;left:-50%;width:200%;height:75%;z-index:2;background:linear-gradient(rgba(0,200,255,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,255,.3) 1px,transparent 1px);background-size:55px 55px;transform:perspective(300px) rotateX(60deg);mask-image:linear-gradient(to bottom,transparent,black);animation:floorMove 3s linear infinite}
+@keyframes floorMove{to{background-position:0 55px}}
+.scanner{position:fixed;top:-8%;left:5%;width:90%;height:6%;z-index:3;pointer-events:none;background:linear-gradient(to bottom,transparent,rgba(0,220,255,.025),rgba(0,220,255,.12),rgba(0,240,255,.35),rgba(255,255,255,.55),rgba(0,220,255,.12),transparent);filter:blur(2px);animation:scannerMove 7s linear infinite}
+.scanner:after{content:"";position:absolute;bottom:0;left:0;width:100%;height:2px;background:#00eaff;box-shadow:0 0 8px #00eaff,0 0 18px rgba(0,234,255,.6)}
+@keyframes scannerMove{from{top:-8%}to{top:110%}}
+.scanner2{position:fixed;top:-5px;left:5%;height:1px;width:90%;z-index:3;background:rgba(0,234,255,.6);box-shadow:0 0 8px rgba(0,234,255,.5);animation:scannerMove 10s linear infinite}
+.corner{position:fixed;z-index:10;color:#65dfff;font-size:11px;letter-spacing:3px}
+.top-left{top:28px;left:35px}.top-right{top:28px;right:35px}.bottom-left{bottom:25px;left:35px}.bottom-right{bottom:25px;right:35px}
+.main{position:relative;z-index:5;height:100vh;width:100%;display:flex;justify-content:center;align-items:center;flex-direction:column}
+.top-label{font-size:clamp(10px,1.3vw,17px);color:#a5ecff;letter-spacing:8px;margin-bottom:10px;text-align:center}
+.energy{position:absolute;width:min(48vw,54vh);aspect-ratio:1;display:flex;justify-content:center;align-items:center;pointer-events:none}
+.orbit{position:absolute;width:100%;height:100%;border-radius:50%;border:1px solid rgba(0,220,255,.4);box-shadow:0 0 25px rgba(0,170,255,.2),inset 0 0 25px rgba(0,170,255,.1);animation:rotate 20s linear infinite}
+.orbit.two{width:85%;height:85%;border:2px dashed rgba(0,140,255,.7);animation:rotateBack 14s linear infinite}
+.orbit.three{width:70%;height:70%;border:2px solid transparent;border-top-color:var(--cyan);border-bottom-color:var(--purple);animation:rotate 7s linear infinite}
+.orbit.four{width:55%;height:55%;border:1px dotted white;animation:rotateBack 10s linear infinite}
+.orbit:before,.orbit:after{content:"";position:absolute;height:12px;width:12px;border-radius:50%;background:white;box-shadow:0 0 20px 5px var(--cyan)}
+.orbit:before{top:10%;left:20%}.orbit:after{bottom:10%;right:20%}
+@keyframes rotate{to{transform:rotate(360deg)}}@keyframes rotateBack{to{transform:rotate(-360deg)}}
+.title-area{position:relative;z-index:7;text-align:center;perspective:900px}
+.typing-title{display:inline-block;min-height:1.15em;font-size:clamp(42px,8vw,115px);font-weight:1000;letter-spacing:clamp(2px,.65vw,8px);line-height:1.15;text-align:center;white-space:nowrap;color:#dffaff;text-shadow:0 0 8px rgba(0,234,255,.75),0 0 22px rgba(0,140,255,.55);transform-style:preserve-3d;transform-origin:center}
+.typed-letter{display:inline-block;opacity:0;transform:translateY(22px) rotateX(-55deg) scale(.82);filter:blur(7px);animation:letterArrive .48s cubic-bezier(.18,.78,.22,1) forwards;background:linear-gradient(180deg,#fff 0%,#d9fbff 28%,#55eaff 65%,#168bff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+.typed-space{display:inline-block;width:.28em}
+@keyframes letterArrive{0%{opacity:0;transform:translateY(22px) rotateX(-55deg) scale(.82);filter:blur(7px)}65%{opacity:1;transform:translateY(-3px) rotateX(8deg) scale(1.08);filter:blur(0)}100%{opacity:1;transform:translateY(0) rotateX(0) scale(1);filter:blur(0)}}
+.typing-cursor{display:inline-block;color:#fff;margin-left:5px;font-weight:400;text-shadow:0 0 8px #00eaff,0 0 18px #00eaff;animation:cursorBlink .72s steps(2,start) infinite;vertical-align:.04em}
+@keyframes cursorBlink{50%{opacity:0}}
+.typing-title.typing-complete{animation:titleBreath 3.2s ease-in-out infinite}
+@keyframes titleBreath{0%,100%{filter:drop-shadow(0 0 8px rgba(0,170,255,.45))}50%{filter:drop-shadow(0 0 16px rgba(0,234,255,.85)) drop-shadow(0 0 32px rgba(0,110,255,.55))}}
+.title-area.title-finished:after{content:"";display:block;height:2px;width:min(72%,520px);margin:10px auto 0;background:linear-gradient(90deg,transparent,#00eaff,#fff,#008cff,transparent);box-shadow:0 0 12px #00dfff,0 0 25px rgba(0,140,255,.65);transform-origin:center;animation:titleUnderline 1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes titleUnderline{from{opacity:0;transform:scaleX(.05)}to{opacity:1;transform:scaleX(1)}}
+
+/* The three timed title effects run in sequence after typing finishes. */
+.typing-title.zoom-in{animation:zoomIn .78s cubic-bezier(.12,.8,.2,1) both}
+.typing-title.zoom-out{animation:zoomOut 1.75s cubic-bezier(.35,0,.2,1) both}
+.typing-title.circular{animation:circularSpin 2.1s cubic-bezier(.45,.05,.25,1) both}
+@keyframes zoomIn{
+    0%{transform:scale(1)}
+    65%{transform:scale(1.72)}
+    82%{transform:scale(1.58)}
+    100%{transform:scale(1.62)}
+}
+@keyframes zoomOut{
+    0%{transform:scale(1.62)}
+    45%{transform:scale(.82)}
+    72%{transform:scale(1.08)}
+    100%{transform:scale(1)}
+}
+@keyframes circularSpin{
+    0%{transform:rotate(0deg) scale(1)}
+    25%{transform:rotate(180deg) scale(1.08)}
+    50%{transform:rotate(360deg) scale(.96)}
+    75%{transform:rotate(540deg) scale(1.06)}
+    100%{transform:rotate(720deg) scale(1)}
+}
+.tagline{margin-top:18px;font-size:clamp(10px,1.4vw,18px);letter-spacing:6px;color:#c4efff}
+.word-box{margin-top:28px;height:42px;overflow:hidden;position:relative;z-index:7}
+.word{color:var(--cyan);font-size:clamp(14px,2vw,25px);font-weight:bold;letter-spacing:4px;text-shadow:0 0 14px rgba(0,234,255,.7);animation:wordPulse 2s ease-in-out infinite alternate}
+@keyframes wordPulse{from{opacity:.5;transform:scale(.96)}to{opacity:1;transform:scale(1.04)}}
+.hud{position:fixed;z-index:6;top:36%;width:175px;padding:15px;border:1px solid rgba(0,220,255,.4);background:rgba(0,30,65,.38);box-shadow:0 0 20px rgba(0,180,255,.1);backdrop-filter:blur(5px)}
+.hud.left{left:2%}.hud.right{right:2%}
+.hud-title{font-size:11px;letter-spacing:3px;color:var(--cyan);padding-bottom:10px;border-bottom:1px solid rgba(0,220,255,.3);margin-bottom:12px}
+.hud-line{font-size:10px;color:#a7dcff;margin:10px 0;letter-spacing:1px;white-space:nowrap}
+.status{display:inline-block;height:6px;width:6px;border-radius:50%;background:#00ffb3;box-shadow:0 0 10px #00ffb3;margin-right:6px;animation:blink 1s infinite alternate}
+@keyframes blink{to{opacity:.2}}
+.progress{height:4px;width:100%;background:#15324b;margin-top:5px;overflow:hidden}
+.progress span{display:block;height:100%;width:70%;background:linear-gradient(90deg,#007bff,#00eaff);box-shadow:0 0 10px var(--cyan);animation:progressMove 3s ease-in-out infinite alternate}
+@keyframes progressMove{from{width:25%}to{width:100%}}
+.ticker{position:fixed;z-index:8;width:100%;overflow:hidden;white-space:nowrap;background:rgba(0,18,40,.72);border-top:1px solid rgba(0,220,255,.35);border-bottom:1px solid rgba(0,220,255,.35)}
+.ticker.top{top:85px}.ticker.bottom-ticker{bottom:75px}
+.ticker-track{display:flex;width:max-content;animation:tickerMove 38s linear infinite}
+.ticker-content{display:flex;flex-shrink:0;align-items:center;gap:34px;padding:9px 20px;color:#8cecff;font-size:10px;letter-spacing:2.5px}
+.ticker-content span:before{content:"◆";color:#00eaff;margin-right:15px}
+@keyframes tickerMove{to{transform:translateX(-50%)}}
+.float-text{position:fixed;z-index:4;font-size:12px;letter-spacing:3px;color:rgba(0,220,255,.7);white-space:nowrap;text-shadow:0 0 15px var(--cyan);pointer-events:none}
+.float1{left:8%;top:22%;animation:floatA 8s ease-in-out infinite}.float2{right:8%;top:22%;animation:floatB 9s ease-in-out infinite}.float3{left:9%;bottom:20%;animation:floatB 7s ease-in-out infinite}.float4{right:8%;bottom:20%;animation:floatA 8s ease-in-out infinite}
+@keyframes floatA{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(-30px);opacity:1}}
+@keyframes floatB{0%,100%{transform:translateY(-15px);opacity:.4}50%{transform:translateY(20px);opacity:1}}
+.feature{position:fixed;z-index:6;left:50%;bottom:11%;transform:translateX(-50%);width:100%;text-align:center;pointer-events:none}
+.feature-label{max-width:86vw;margin:0 auto 10px;font-size:10px;letter-spacing:5px;color:#72cfff}
+.feature-text{max-width:86vw;margin:0 auto;font-size:clamp(12px,1.55vw,20px);font-weight:900;letter-spacing:4px;color:white;text-shadow:0 0 15px var(--cyan),0 0 35px var(--blue);animation:featureGlow 2s ease-in-out infinite alternate}
+@keyframes featureGlow{to{color:var(--cyan);text-shadow:0 0 25px var(--cyan),0 0 55px var(--blue)}}
+.hex{position:fixed;z-index:3;width:55px;height:48px;border:1px solid rgba(0,220,255,.6);clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);background:rgba(0,180,255,.1);animation:hexPulse 3s ease-in-out infinite alternate}
+.hex1{top:45%;left:2%}.hex2{top:45%;right:2%}.hex3{top:18%;left:26%;transform:scale(.6)}.hex4{bottom:17%;right:26%;transform:scale(.6)}
+@keyframes hexPulse{to{background:rgba(0,220,255,.3);filter:drop-shadow(0 0 15px var(--cyan))}}
+.future-object{position:fixed;z-index:4;pointer-events:none;user-select:none;filter:drop-shadow(0 0 9px rgba(0,220,255,.55));opacity:.82}
+.robot{left:8%;bottom:28%;font-size:clamp(25px,3vw,42px);animation:robotWalk 11s ease-in-out infinite}
+.flying-car{right:7%;top:31%;font-size:clamp(27px,3.2vw,45px);animation:carFly 13s ease-in-out infinite}
+.drone{right:16%;bottom:24%;font-size:clamp(18px,2vw,27px);opacity:.58;animation:droneFloat 8s ease-in-out infinite}
+@keyframes robotWalk{0%,100%{transform:translate(0,0) rotate(-3deg)}25%{transform:translate(22px,-5px) rotate(3deg)}55%{transform:translate(48px,0) rotate(-2deg)}80%{transform:translate(20px,-7px) rotate(2deg)}}
+@keyframes carFly{0%,100%{transform:translate(0,0) rotate(-5deg)}35%{transform:translate(-38px,-18px) rotate(1deg)}70%{transform:translate(-75px,5px) rotate(-2deg)}}
+@keyframes droneFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(-22px,-24px)}}
+@media(max-width:1000px){.hud{width:155px;padding:9px}.hud-line{font-size:8px}}
+@media(max-width:700px){.hud{display:none}.float-text{font-size:8px}.corner{font-size:8px;letter-spacing:1px}.top-left{left:10px}.top-right{right:10px}.bottom-left{left:10px}.bottom-right{right:10px}.tagline{letter-spacing:2px}.ticker-content{gap:25px;font-size:9px}.top-label{letter-spacing:3px}.feature-text{letter-spacing:3px}}
+@media(max-width:1100px){.hud{width:145px}.hud-line{white-space:normal}.energy{width:min(44vw,48vh)}.ticker.top{top:72px}}
+@media(max-height:720px){.energy{width:min(42vw,43vh)}.top-label{margin-bottom:4px}.word-box{margin-top:18px}.feature{bottom:9%}.ticker.bottom-ticker{bottom:55px}.corner{font-size:9px}}
+@media(max-width:700px){.scanner{left:5%;width:90%;height:5%}.scanner2{left:5%;width:90%}.energy{width:min(76vw,46vh)}.robot{left:3%;bottom:22%}.flying-car{right:3%;top:26%}.drone{display:none}}
+@media(prefers-reduced-motion:reduce){.floor,.scanner,.scanner2,.orbit,.ticker-track,.float-text,.future-object{animation-duration:30s}}
+</style>
+</head>
+<body>
+<div class="background"></div><canvas id="universe"></canvas><div class="grid"></div><div class="floor"></div>
+<div class="scanner"></div><div class="scanner2"></div>
+<div class="corner top-left">KVTS // ANNUAL DAY</div>
+<div class="corner top-right">FUTURE INTERFACE // 3.0</div>
+<div class="corner bottom-left">SYSTEM STATUS : ACTIVE</div>
+<div class="corner bottom-right">NEXT GENERATION TECHNOLOGY</div>
+
+<div class="ticker top"><div class="ticker-track">
+<div class="ticker-content"><span>ARTIFICIAL INTELLIGENCE</span><span>ROBOTICS REVOLUTION</span><span>TIME MACHINE ACTIVATED</span><span>QUANTUM COMPUTING</span><span>FUTURE IS NOW</span><span>NEURAL NETWORK</span><span>CYBER UNIVERSE</span></div>
+<div class="ticker-content" aria-hidden="true"><span>ARTIFICIAL INTELLIGENCE</span><span>ROBOTICS REVOLUTION</span><span>TIME MACHINE ACTIVATED</span><span>QUANTUM COMPUTING</span><span>FUTURE IS NOW</span><span>NEURAL NETWORK</span><span>CYBER UNIVERSE</span></div>
+</div></div>
+
+<div class="future-object robot" aria-hidden="true">🤖</div>
+<div class="future-object flying-car" aria-hidden="true">🚘</div>
+<div class="future-object drone" aria-hidden="true">🛸</div>
+<div class="float-text float1">AI // ROBOTICS</div><div class="float-text float2">TIME TRAVEL // 2050</div>
+<div class="float-text float3">QUANTUM REALITY</div><div class="float-text float4">DIGITAL INTELLIGENCE</div>
+
+<div class="hud left">
+<div class="hud-title">AI CORE SYSTEM</div>
+<div class="hud-line"><span class="status"></span> AI ENGINE ONLINE</div>
+<div class="hud-line">NEURAL PROCESSING</div><div class="progress"><span></span></div>
+<div class="hud-line">ROBOTICS NETWORK</div><div class="progress"><span></span></div>
+<div class="hud-line"><span class="status"></span> QUANTUM LINK ACTIVE</div>
+<div class="hud-line">SYSTEM VERSION : 3.0</div>
+</div>
+<div class="hud right">
+<div class="hud-title">TIME MACHINE</div><div class="hud-line"><span class="status"></span> PORTAL ONLINE</div>
+<div class="hud-line">CURRENT TIMELINE</div><div class="hud-line" style="color:white;font-size:17px"><span id="clock">2050</span></div>
+<div class="hud-line">FUTURE COORDINATES</div><div class="hud-line">INDIA // EARTH</div>
+<div class="hud-line"><span class="status"></span> TIME FLOW ACTIVE</div><div class="hud-line">DIMENSION : 03</div>
+</div>
+
+<div class="main">
+<div class="top-label">A NEW DIMENSION OF IMAGINATION</div>
+<div class="energy"><div class="orbit"></div><div class="orbit two"></div><div class="orbit three"></div><div class="orbit four"></div></div>
+<div class="title-area">
+<div class="typing-title" id="typingTitle"><span id="typedTitle"></span><span class="typing-cursor" id="typingCursor">|</span></div>
+<div class="tagline">THINK BEYOND • CREATE THE FUTURE</div>
+</div>
+<div class="word-box"><div class="word" id="changingWord">INNOVATION</div></div>
+</div>
+
+<div class="feature"><div class="feature-label" id="featureLabel">FUTURE TECHNOLOGY SYSTEM</div><div class="feature-text" id="featureText">ARTIFICIAL INTELLIGENCE</div></div>
+<div class="ticker bottom-ticker"><div class="ticker-track">
+<div class="ticker-content"><span>EXPLORE THE UNKNOWN</span><span>BEYOND HUMAN IMAGINATION</span><span>THE AGE OF ROBOTICS</span><span>ENTER THE TIME MACHINE</span><span>DISCOVER TOMORROW</span><span>INNOVATE THE WORLD</span></div>
+<div class="ticker-content" aria-hidden="true"><span>EXPLORE THE UNKNOWN</span><span>BEYOND HUMAN IMAGINATION</span><span>THE AGE OF ROBOTICS</span><span>ENTER THE TIME MACHINE</span><span>DISCOVER TOMORROW</span><span>INNOVATE THE WORLD</span></div>
+</div></div>
+
+<script>
+/* VIKALPA 3.0 — REPEATING 4-SECOND TITLE CYCLE
+   TYPE → WAIT 4s → FAST ZOOM IN → WAIT 4s → SLOW ZOOM OUT
+   → WAIT 4s → TWO QUICK CIRCULAR TURNS → WAIT 4s → TYPE AGAIN
+*/
+const titleText = "VIKALPA";
+const typedTitle = document.getElementById("typedTitle");
+const typingCursor = document.getElementById("typingCursor");
+const typingTitle = document.getElementById("typingTitle");
+const titleArea = document.querySelector(".title-area");
+
+const TITLE_STEP_MS = 4000;
+let titlePosition = 0;
+let titleTimers = [];
+
+function clearTitleTimers() {
+    titleTimers.forEach(timer => window.clearTimeout(timer));
+    titleTimers = [];
+}
+
+function titleDelay(callback, delay) {
+    const timer = window.setTimeout(callback, delay);
+    titleTimers.push(timer);
+}
+
+function resetTitleForTyping() {
+    clearTitleTimers();
+
+    typingTitle.classList.remove(
+        "typing-complete", "zoom-in", "zoom-out", "circular"
+    );
+    titleArea.classList.remove("title-finished");
+
+    // Force the browser to apply the reset before the next letter animation.
+    void typingTitle.offsetWidth;
+
+    typedTitle.innerHTML = "";
+    titlePosition = 0;
+
+    typingCursor.style.display = "inline-block";
+    typingCursor.style.opacity = "1";
+    typingCursor.style.animation = "cursorBlink .72s steps(2, start) infinite";
+
+    typeVikalpa();
+}
+
+function typeVikalpa() {
+    if (titlePosition >= titleText.length) {
+        typingCursor.style.opacity = "0";
+        typingCursor.style.animation = "none";
+        typingTitle.classList.add("typing-complete");
+        titleArea.classList.add("title-finished");
+
+        // Start the visual effects 4 seconds after typing is complete.
+        titleDelay(startZoomIn, TITLE_STEP_MS);
+        return;
+    }
+
+    const character = titleText[titlePosition];
+    const letter = document.createElement("span");
+
+    if (character === " ") {
+        letter.className = "typed-space";
+        letter.innerHTML = "&nbsp;";
+    } else {
+        letter.className = "typed-letter";
+        letter.textContent = character;
+    }
+
+    typedTitle.appendChild(letter);
+    titlePosition++;
+
+    let nextDelay = 105;
+    if (character === " ") nextDelay = 180;
+    if (character === "A") nextDelay = 210;
+
+    titleDelay(typeVikalpa, nextDelay);
+}
+
+function startZoomIn() {
+    typingTitle.classList.remove("typing-complete");
+    typingTitle.classList.add("zoom-in");
+
+    // The next stage begins exactly 4 seconds after this stage starts.
+    titleDelay(startZoomOut, TITLE_STEP_MS);
+}
+
+function startZoomOut() {
+    typingTitle.classList.remove("zoom-in");
+    void typingTitle.offsetWidth;
+    typingTitle.classList.add("zoom-out");
+
+    titleDelay(startCircularMotion, TITLE_STEP_MS);
+}
+
+function startCircularMotion() {
+    typingTitle.classList.remove("zoom-out");
+    void typingTitle.offsetWidth;
+    typingTitle.classList.add("circular");
+
+    // Two complete 360-degree rotations are built into the circular effect.
+    titleDelay(resetTitleForTyping, TITLE_STEP_MS);
+}
+
+window.addEventListener("load", () => {
+    titleDelay(typeVikalpa, 900);
+});
+
+/* CONTINUOUS CHANGING TECHNOLOGY WORDS */
+const words=["INNOVATION","IMAGINATION","CREATIVITY","ARTIFICIAL INTELLIGENCE","ROBOTICS REVOLUTION","TIME TRAVEL","QUANTUM COMPUTING","DIGITAL UNIVERSE","FUTURE TECHNOLOGY","CYBER INTELLIGENCE","MACHINE LEARNING","BEYOND LIMITS","INFINITE POSSIBILITIES","HUMAN + MACHINE","NEXT GENERATION","TECHNOLOGY REDEFINED"];
+let wordIndex=0;
+const wordElement=document.getElementById("changingWord");
+function changeWord(){
+    wordElement.style.animation="none";
+    void wordElement.offsetWidth;
+    wordIndex=(wordIndex+1)%words.length;
+    wordElement.textContent=words[wordIndex];
+    wordElement.style.animation="wordPulse 2s ease-in-out infinite alternate";
+}
+setInterval(changeWord,2500);
+
+/* FEATURE DISPLAY */
+const features=[
+{label:"INTELLIGENCE OF TOMORROW",text:"ARTIFICIAL INTELLIGENCE"},
+{label:"THE FUTURE HAS ARRIVED",text:"AI ROBOTICS REVOLUTION"},
+{label:"BREAKING THE BOUNDARIES OF TIME",text:"TIME MACHINE // 2050"},
+{label:"THE POWER OF ADVANCED SCIENCE",text:"QUANTUM COMPUTING"},
+{label:"A NEW DIGITAL DIMENSION",text:"CYBER UNIVERSE"},
+{label:"HUMANITY MEETS TECHNOLOGY",text:"HUMAN + MACHINE"},
+{label:"EXPLORE THE UNKNOWN",text:"SPACE EXPLORATION"},
+{label:"THE NEXT EVOLUTION",text:"NEURAL NETWORKS"},
+{label:"REIMAGINING THE WORLD",text:"FUTURE TECHNOLOGY"},
+{label:"UNLIMITED POSSIBILITIES",text:"INNOVATION WITHOUT LIMITS"}
+];
+let featureIndex=0;
+const featureText=document.getElementById("featureText");
+const featureLabel=document.getElementById("featureLabel");
+function changeFeature(){
+    featureIndex=(featureIndex+1)%features.length;
+    featureText.style.opacity=0;featureLabel.style.opacity=0;
+    setTimeout(()=>{
+        featureText.textContent=features[featureIndex].text;
+        featureLabel.textContent=features[featureIndex].label;
+        featureText.style.opacity=1;featureLabel.style.opacity=1;
+    },450);
+}
+setInterval(changeFeature,4500);
+
+/* FUTURE CLOCK */
+let futureYear=2050;
+setInterval(()=>{
+    futureYear++;
+    if(futureYear>2099)futureYear=2050;
+    document.getElementById("clock").textContent=futureYear;
+},5000);
+
+/* DIGITAL UNIVERSE */
+const canvas=document.getElementById("universe");
+const ctx=canvas.getContext("2d");
+let particles=[],stars=[],dataColumns=[];
+function resizeCanvas(){
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=window.innerWidth*dpr;
+    canvas.height=window.innerHeight*dpr;
+    canvas.style.width=window.innerWidth+"px";
+    canvas.style.height=window.innerHeight+"px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    particles=[];stars=[];
+    for(let i=0;i<90;i++)particles.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+.5,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5});
+    for(let i=0;i<110;i++)stars.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.5,alpha:Math.random()});
+    createData();
+}
+function drawUniverse(){
+    const w=innerWidth,h=innerHeight;
+    ctx.clearRect(0,0,w,h);
+    stars.forEach(s=>{
+        s.alpha+=(Math.random()-.5)*.04;s.alpha=Math.max(.1,Math.min(1,s.alpha));
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(160,230,255,${s.alpha})`;ctx.fill();
+    });
+    particles.forEach((p,i)=>{
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
+        ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle="#00eaff";ctx.shadowBlur=15;ctx.shadowColor="#00aaff";ctx.fill();ctx.shadowBlur=0;
+        for(let j=i+1;j<particles.length;j++){
+            const q=particles[j],dx=p.x-q.x,dy=p.y-q.y,distance=Math.hypot(dx,dy);
+            if(distance<145){
+                ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+                ctx.strokeStyle=`rgba(0,190,255,${.35*(1-distance/145)})`;ctx.lineWidth=.7;ctx.stroke();
+            }
+        }
+    });
+}
+let angle=0;
+function drawPortal(){
+    const cx=innerWidth/2,cy=innerHeight/2;
+    angle+=.008;
+    const radius=Math.min(innerWidth,innerHeight)*.32;
+    const x=cx+Math.cos(angle)*radius,y=cy+Math.sin(angle)*radius;
+    const glow=ctx.createRadialGradient(x,y,0,x,y,85);
+    glow.addColorStop(0,"rgba(0,235,255,.45)");glow.addColorStop(1,"rgba(0,235,255,0)");
+    ctx.fillStyle=glow;ctx.beginPath();ctx.arc(x,y,85,0,Math.PI*2);ctx.fill();
+}
+function createData(){
+    dataColumns=[];
+    for(let i=0;i<30;i++)dataColumns.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,speed:Math.random()*1.7+.5});
+}
+function drawData(){
+    ctx.save();ctx.font="10px monospace";
+    dataColumns.forEach(d=>{
+        d.y+=d.speed;
+        if(d.y>innerHeight+30){d.y=-30;d.x=Math.random()*innerWidth;}
+        ctx.fillStyle="rgba(0,210,255,.13)";ctx.fillText(Math.random()>.5?"1":"0",d.x,d.y);
+    });
+    ctx.restore();
+}
+function animate(){drawUniverse();drawPortal();drawData();requestAnimationFrame(animate);}
+window.addEventListener("resize",resizeCanvas);
+resizeCanvas();animate();
+</script>
+</body>
+</html>
